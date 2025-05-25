@@ -28,6 +28,7 @@ import type { IOdooFilterOperations } from './GenericFunctions';
 import {
 	odooCreate,
 	odooDelete,
+	odooExecute,
 	odooGet,
 	odooGetAll,
 	odooGetDBName,
@@ -525,6 +526,19 @@ export class Odoo implements INodeType {
 							url,
 							customResourceId,
 							processNameValueFields(fields),
+						);
+					}
+					if (operation === 'execute') {
+						responseData = await odooExecute.call(
+							this,
+							db,
+							userID,
+							password,
+							customResource,
+							this.getNodeParameter('method', i) as string,
+							url,
+							this.getNodeParameter('executeArgs', i) as string,
+							this.getNodeParameter('executeKwargs', i) as string,
 						);
 					}
 				}

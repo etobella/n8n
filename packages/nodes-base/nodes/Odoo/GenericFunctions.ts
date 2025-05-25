@@ -10,6 +10,7 @@ import { NodeApiError, randomInt } from 'n8n-workflow';
 
 const serviceJSONRPC = 'object';
 const methodJSONRPC = 'execute';
+const methodJSONRPCKW = 'execute_kw';
 
 export const mapOperationToJSONRPC = {
 	create: 'create',
@@ -199,6 +200,44 @@ export async function odooCreate(
 
 		const result = await odooJSONRPCRequest.call(this, body, url);
 		return { id: result };
+	} catch (error) {
+		throw new NodeApiError(this.getNode(), error as JsonObject);
+	}
+}
+
+export async function odooExecute(
+	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
+	db: string,
+	userID: number,
+	password: string,
+	resource: string,
+	operation: string,
+	url: string,
+	args: string,
+	kwargs: string,
+) {
+	try {
+		const body = {
+			jsonrpc: '2.0',
+			method: 'call',
+			params: {
+				service: serviceJSONRPC,
+				method: methodJSONRPCKW,
+				args: [
+					db,
+					userID,
+					password,
+					mapOdooResources[resource] || resource,
+					operation,
+					JSON.parse(args || '[]'),
+					JSON.parse(kwargs || '{}'),
+				],
+			},
+			id: randomInt(100),
+		};
+
+		const result = await odooJSONRPCRequest.call(this, body, url);
+		return result;
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}

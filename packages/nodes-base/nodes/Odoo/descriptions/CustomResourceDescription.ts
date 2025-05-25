@@ -59,6 +59,12 @@ export const customResourceOperations: INodeProperties[] = [
 				description: 'Update an item',
 				action: 'Update an item',
 			},
+			{
+				name: 'Execute Custom Method',
+				value: 'execute',
+				description: 'Execute a custom method',
+				action: 'Execute a custom method',
+			},
 		],
 	},
 ];
@@ -340,5 +346,44 @@ export const customResourceDescription: INodeProperties[] = [
 				],
 			},
 		],
+	},
+	/* -------------------------------------------------------------------------- */
+	/*                                custom:execute                              */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Method',
+		name: 'method',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				operation: ['execute'],
+				resource: ['custom'],
+			},
+		},
+	},
+	{
+		displayName: 'Arguments',
+		name: 'executeArgs',
+		type: 'json',
+		displayOptions: {
+			show: {
+				operation: ['execute'],
+				resource: ['custom'],
+			},
+		},
+		default: '[]',
+	},
+	{
+		displayName: 'Keyword Arguments',
+		name: 'executeKwargs',
+		type: 'json',
+		displayOptions: {
+			show: {
+				operation: ['execute'],
+				resource: ['custom'],
+			},
+		},
+		default: '{}',
 	},
 ];
